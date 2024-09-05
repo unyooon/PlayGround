@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Header } from "@/components/ui/header";
+import { Header } from "@/components/ui/header"; // Headerをインポート
 import { Footer } from "@/components/ui/footer"; // Footerをインポート
 
 export function Component() {

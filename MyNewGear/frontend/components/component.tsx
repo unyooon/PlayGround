@@ -1,19 +1,3 @@
-/** Add fonts into your Next.js project:
-
-import { IBM_Plex_Sans } from 'next/font/google'
-import { Chivo } from 'next/font/google'
-
-ibm_plex_sans({
-  subsets: ['latin'],
-  display: 'swap',
-})
-
-chivo({
-  subsets: ['latin'],
-  display: 'swap',
-})
-
-**/
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Header } from "@/components/ui/header";
+import { Footer } from "@/components/ui/footer"; // Footerをインポート
 
 export function Component() {
   return (
@@ -78,41 +63,8 @@ export function Component() {
           {/* Other gear items go here */}
         </div>
       </main>
-      <footer className="bg-white py-6">
-        <div className="container mx-auto flex items-center justify-between px-4 md:px-6">
-          <div className="flex items-center gap-2">
-            <CaravanIcon className="h-6 w-6" />
-            <span className="font-bold text-primary">Campify</span>
-          </div>
-          <div className="text-sm text-muted-foreground">
-            &copy; 2024 Campify. All rights reserved.
-          </div>
-        </div>
-      </footer>
+      <Footer /> {/* Footerを追加 */}
     </div>
-  );
-}
-
-function CaravanIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect width="4" height="4" x="2" y="9" />
-      <rect width="4" height="10" x="10" y="9" />
-      <path d="M18 19V9a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v8a2 2 0 0 0 2 2h2" />
-      <circle cx="8" cy="19" r="2" />
-      <path d="M10 19h12v-2" />
-    </svg>
   );
 }
 

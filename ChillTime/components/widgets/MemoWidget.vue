@@ -54,7 +54,6 @@ watch(memoContent, (newValue) => {
 
     &:focus {
       box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
-      border-color: #007bff; // フォーカス時のボーダー色を変更
       outline: none;
     }
   }

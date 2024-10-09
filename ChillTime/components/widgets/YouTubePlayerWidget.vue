@@ -6,31 +6,76 @@
       @update:title="(v) => (title = v)"
     />
     <div class="widget-content">
-      <input
-        type="text"
-        v-model="videoUrl"
-        placeholder="YouTubeのURLを入力"
-        class="url-input"
-        @blur="loadVideo"
-      />
-      <button
-        @click="togglePlayPause"
-        class="control-button"
-        :disabled="!isValidUrl"
-      >
-        <FontAwesomeIcon
-          :icon="isPlaying ? ['fas', 'pause'] : ['fas', 'play']"
+      <div class="input-group">
+        <input
+          type="text"
+          v-model="videoUrl"
+          placeholder="YouTubeのURLを入力"
+          class="url-input"
+          @keyup.enter="() => (isValidUrl ? addToQueue() : {})"
         />
-        {{ isPlaying ? "停止" : "再生" }}
-      </button>
+        <button
+          @click="addToQueue"
+          class="queue-button"
+          :disabled="!isValidUrl"
+        >
+          <FontAwesomeIcon :icon="['fas', 'plus']" />
+        </button>
+      </div>
+      <div style="display: flex; justify-content: space-between; width: 100%">
+        <div class="control-button-group">
+          <button
+            @click="togglePlayPause"
+            class="control-button"
+            :disabled="videoQueue.length === 0"
+          >
+            <FontAwesomeIcon
+              :icon="isPlaying ? ['fas', 'pause'] : ['fas', 'play']"
+            />
+          </button>
+          <button
+            @click="skipToNext"
+            class="control-button"
+            :disabled="videoQueue.length <= 1"
+          >
+            <FontAwesomeIcon :icon="['fas', 'forward']" />
+          </button>
+        </div>
+        <button
+          v-if="!isHiddenPlayer"
+          @click="hiddenPlayer"
+          class="control-button"
+        >
+          <FontAwesomeIcon :icon="['fas', 'eye-slash']" />
+        </button>
+        <button
+          v-if="isHiddenPlayer"
+          @click="showPlayer"
+          class="control-button"
+        >
+          <FontAwesomeIcon :icon="['fas', 'eye']" />
+        </button>
+      </div>
       <div ref="playerContainer" class="player-container"></div>
+      <ul class="queue-list">
+        <li
+          v-for="(videoId, index) in videoQueue"
+          :key="index"
+          :class="{ playing: index === 0 && isPlaying }"
+        >
+          <FontAwesomeIcon
+            v-if="index === 0 && isPlaying"
+            :icon="['fas', 'play-circle']"
+            class="playing-icon"
+          />
+          {{ videoId }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from "vue";
-
 const props = defineProps<{
   id: string;
 }>();
@@ -42,45 +87,85 @@ const videoUrl = ref("");
 let player: YT.Player | null = null;
 const playerContainer = ref<HTMLElement | null>(null);
 const isPlaying = ref(false);
+const videoQueue = ref<string[]>([]);
+const isHiddenPlayer = ref(false);
 
 const isValidUrl = computed(() => {
   return extractVideoId(videoUrl.value) !== null;
 });
 
+function hiddenPlayer() {
+  const iframeEl = document.getElementsByTagName("iframe")[0];
+  if (iframeEl && !isHiddenPlayer.value) {
+    iframeEl.style.width = "0";
+    iframeEl.style.height = "0";
+    iframeEl.style.opacity = "0";
+    isHiddenPlayer.value = true;
+  }
+}
+
+function showPlayer() {
+  const iframeEl = document.getElementsByTagName("iframe")[0];
+  if (iframeEl && isHiddenPlayer.value) {
+    iframeEl.style.width = "100%";
+    iframeEl.style.height = "100%";
+    iframeEl.style.opacity = "1";
+    isHiddenPlayer.value = false;
+  }
+}
+
 function removeWidget() {
   if (player) {
-    player.destroy(); // プレイヤーを破棄
-    player = null; // プレイヤーをnullにリセット
+    player.destroy();
+    player = null;
   }
   emit("remove", props.id);
-  resetState(); // 状態をリセット
+  resetState();
 }
 
 function resetState() {
   videoUrl.value = "";
   isPlaying.value = false;
+  videoQueue.value = [];
+}
+
+function addToQueue() {
+  videoQueue.value.push(videoUrl.value);
+  videoUrl.value = "";
+}
+
+function playNextVideo() {
+  if (videoQueue.value.length > 0 && player) {
+    const nextVideoUrl = videoQueue.value.shift();
+    if (nextVideoUrl) {
+      player.loadVideoById(extractVideoId(nextVideoUrl));
+      isPlaying.value = true;
+    }
+  }
 }
 
 function togglePlayPause() {
-  if (player && isValidUrl.value) {
+  if (player) {
     if (isPlaying.value) {
-      player.stopVideo();
+      player.pauseVideo();
     } else {
-      player.playVideo();
+      if (videoQueue.value.length > 0) {
+        if (player.getPlayerState() === YT.PlayerState.PAUSED) {
+          player.playVideo();
+        } else {
+          const nextVideoUrl = videoQueue.value[0];
+          player.loadVideoById(extractVideoId(nextVideoUrl));
+        }
+        isPlaying.value = true;
+      }
     }
     isPlaying.value = !isPlaying.value;
   }
 }
 
-function loadVideo() {
-  if (isValidUrl.value) {
-    const videoId = extractVideoId(videoUrl.value);
-    if (videoId && player) {
-      player.loadVideoById(videoId);
-      isPlaying.value = true;
-    }
-  } else {
-    alert("無効なYouTubeのURLです。");
+function skipToNext() {
+  if (videoQueue.value.length > 1) {
+    playNextVideo();
   }
 }
 
@@ -91,24 +176,14 @@ function extractVideoId(url: string): string | null {
   return match ? match[1] : null;
 }
 
-function onPlayerReady(event: YT.PlayerEvent) {
-  console.log("Player is ready");
-}
-
-function onPlayerPlaybackQualityChange(event: YT.OnPlaybackQualityChangeEvent) {
-  console.log("Playback quality changed to", event.data);
-}
-
 function onPlayerStateChange(event: YT.OnStateChangeEvent) {
-  if (event.data === YT.PlayerState.PLAYING) {
+  if (event.data === YT.PlayerState.ENDED) {
+    playNextVideo();
+  } else if (event.data === YT.PlayerState.PLAYING) {
     isPlaying.value = true;
-  } else if (
-    event.data === YT.PlayerState.PAUSED ||
-    event.data === YT.PlayerState.ENDED
-  ) {
+  } else if (event.data === YT.PlayerState.PAUSED) {
     isPlaying.value = false;
   }
-  console.log("Player state changed to", event.data);
 }
 
 function onPlayerError(event: YT.OnErrorEvent) {
@@ -116,28 +191,38 @@ function onPlayerError(event: YT.OnErrorEvent) {
 }
 
 onMounted(() => {
-  const tag = document.createElement("script");
-  tag.src = "https://www.youtube.com/iframe_api";
-  const firstScriptTag = document.getElementsByTagName("script")[0];
-  firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+  if (
+    !document.querySelector('script[src="https://www.youtube.com/iframe_api"]')
+  ) {
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName("script")[0];
+    firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+  }
 
-  window.onYouTubeIframeAPIReady = () => {
-    if (playerContainer.value) {
-      player = new YT.Player(playerContainer.value, {
-        videoId: "",
-        playerVars: { autoplay: 1, controls: 0 },
-        events: {
-          onReady: onPlayerReady,
-          onPlaybackQualityChange: onPlayerPlaybackQualityChange,
-          onStateChange: onPlayerStateChange,
-          onError: onPlayerError,
-        },
-      });
-    } else {
-      console.error("Player container is not available.");
+  // APIがロードされるまで待機
+  const checkYTReady = setInterval(() => {
+    if (window.YT && window.YT.Player) {
+      clearInterval(checkYTReady);
+      initializePlayer();
     }
-  };
+  }, 100);
 });
+
+function initializePlayer() {
+  if (playerContainer.value) {
+    player = new YT.Player(playerContainer.value, {
+      videoId: "",
+      playerVars: { autoplay: 1, controls: 0 },
+      events: {
+        onStateChange: onPlayerStateChange,
+        onError: onPlayerError,
+      },
+    });
+  } else {
+    console.error("Player container is not available.");
+  }
+}
 
 onBeforeUnmount(() => {
   if (player) {
@@ -148,15 +233,30 @@ onBeforeUnmount(() => {
 
 <style scoped lang="scss">
 .youtube-widget {
+  min-width: 400px;
+
   .widget-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px; // ギャップを少し広げる
+    gap: 15px;
+  }
+
+  .input-group {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .control-button-group {
+    display: flex;
+    width: 100%;
+    gap: 12px;
   }
 
   .url-input {
-    width: 80%;
+    flex: 1;
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -164,14 +264,13 @@ onBeforeUnmount(() => {
     transition: border-color 0.3s, box-shadow 0.3s;
 
     &:focus {
-      border-color: #007bff;
-      box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+      box-shadow: 0 0 8px var(--theme-color);
     }
   }
 
-  .control-button {
-    padding: 12px 20px;
-    background-color: #007bff;
+  .queue-button {
+    padding: 12px;
+    background-color: #28a745;
     color: white;
     border: none;
     border-radius: 8px;
@@ -180,7 +279,28 @@ onBeforeUnmount(() => {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     &:hover {
-      background-color: #0056b3;
+      background-color: #218838;
+      transform: translateY(-2px);
+    }
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  }
+
+  .control-button {
+    padding: 12px 20px;
+    background-color: var(--theme-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      background-color: var(--theme-color-dark);
       transform: translateY(-2px);
     }
 
@@ -192,12 +312,44 @@ onBeforeUnmount(() => {
 
   .player-container {
     width: 100%;
-    height: 390px;
+    height: 240px; // サイズを小さく調整
     background-color: #000;
-    margin-top: 15px; // マージンを少し広げる
+    margin-top: 15px;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .queue-list {
+    width: 100%;
+    margin-top: 15px;
+    padding: 0;
+    list-style: none;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    white-space: nowrap;
+    overflow: hidden;
+
+    li {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &.playing {
+        background-color: var(--theme-color-light-8);
+        font-weight: bold;
+      }
+
+      .playing-icon {
+        margin-right: 8px;
+        color: var(--theme-color-dark);
+      }
+    }
   }
 }
 </style>

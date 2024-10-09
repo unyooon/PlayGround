@@ -23,6 +23,10 @@ export default defineNuxtPlugin(() => {
         Color(newColor).lighten(0.6).hex()
       );
       document.documentElement.style.setProperty(
+        "--theme-color-light-8",
+        Color(newColor).lighten(0.8).hex()
+      );
+      document.documentElement.style.setProperty(
         "--theme-color-dark",
         Color(newColor).darken(0.1).hex()
       );

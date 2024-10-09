@@ -6,6 +6,17 @@
       @update:title="(v) => (title = v)"
     />
     <div class="widget-content">
+      <div class="task-input">
+        <input
+          type="text"
+          v-model="newTaskText"
+          @keyup.enter="addTask"
+          placeholder="新しいタスク"
+        />
+        <button @click="addTask">
+          <FontAwesomeIcon :icon="['fas', 'plus']" />
+        </button>
+      </div>
       <ul class="task-list">
         <li
           v-for="task in tasks"
@@ -19,17 +30,6 @@
           </button>
         </li>
       </ul>
-      <div class="task-input">
-        <input
-          type="text"
-          v-model="newTaskText"
-          @keyup.enter="addTask"
-          placeholder="新しいタスク"
-        />
-        <button @click="addTask">
-          <FontAwesomeIcon :icon="['fas', 'plus']" />
-        </button>
-      </div>
     </div>
   </div>
 </template>
@@ -82,31 +82,39 @@ function deleteTask(id: number) {
     list-style: none;
     padding: 0;
     margin: 0;
+    margin-top: 12px;
 
     li {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: calc($spacing-unit / 2);
-      border-bottom: 1px solid color.adjust($text-color, $lightness: 80%);
+      padding: $spacing-unit;
+      border-bottom: 1px solid #e0e0e0;
+      transition: background 0.3s;
+
+      &:hover {
+        background: #f9f9f9;
+      }
 
       &.completed span {
         text-decoration: line-through;
-        color: color.adjust($text-color, $lightness: 40%);
+        color: #b0b0b0;
       }
 
       input[type="checkbox"] {
         margin-right: $spacing-unit;
+        accent-color: $accent-color;
       }
 
       .delete-button {
         background: none;
         border: none;
-        color: $text-color;
+        color: #888;
         cursor: pointer;
+        transition: color 0.3s, transform 0.3s;
 
         &:hover {
           color: $accent-color;
+          transform: scale(1.1);
         }
       }
     }
@@ -115,21 +123,34 @@ function deleteTask(id: number) {
   .task-input {
     display: flex;
     margin-top: $spacing-unit;
+    gap: $spacing-unit;
 
     input[type="text"] {
       flex: 1;
-      padding: calc($spacing-unit / 2);
-      border: 1px solid color.adjust($text-color, $lightness: 60%);
-      border-radius: $border-radius-base 0 0 $border-radius-base;
+      padding: $spacing-unit;
+      border: 1px solid #ddd;
+      border-radius: $border-radius-base;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: border-color 0.3s, box-shadow 0.3s;
+
+      &:focus {
+        box-shadow: 0 0 8px var(--theme-color);
+      }
     }
 
     button {
       padding: 0 $spacing-unit;
-      background-color: var(--theme-color);
+      background: var(--theme-color);
       border: none;
-      color: $white-color;
-      border-radius: 0 $border-radius-base $border-radius-base 0;
+      color: #fff;
+      border-radius: $border-radius-base;
       cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+
+      &:hover {
+        background: var(--theme-color-dark);
+        transform: scale(1.05);
+      }
     }
   }
 }

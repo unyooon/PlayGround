@@ -335,6 +335,8 @@ onBeforeUnmount(() => {
     li {
       padding: 10px;
       border-bottom: 1px solid #ddd;
+      transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out,
+        margin-right 0.2s ease-in-out, opacity 0.3s ease-in-out;
 
       &:last-child {
         border-bottom: none;

@@ -1,0 +1,33 @@
+// カラーバリエーション
+$primary-color: #3498db;      // メインカラー
+$secondary-color: #2ecc71;    // サブカラー
+$accent-color: #e74c3c;       // アクセントカラー
+$background-color: #ecf0f1;   // 背景色
+$text-color: #2c3e50;         // テキストカラー
+$white-color: #ffffff;        // 白色
+$black-color: #000000;        // 黒色
+
+// フォント設定
+$font-family-base: 'Helvetica Neue', Arial, sans-serif;
+$font-size-base: 16px;        // 基本フォントサイズ
+$font-size-small: 14px;       // 小さいテキスト
+$font-size-large: 18px;       // 大きいテキスト
+
+// スペーシング（余白）
+$spacing-unit: 8px;           // 基本の余白単位
+$border-radius-base: 4px;     // 基本の角丸サイズ
+
+// Z-index（重なり順）
+$z-index-header: 1000;
+$z-index-modal: 2000;
+$z-index-widget: 500;
+
+// シャドウ
+$box-shadow-base: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+// ブレークポイント（レスポンシブ対応用）
+$breakpoints: (
+  'mobile': 480px,
+  'tablet': 768px,
+  'desktop': 1024px
+);

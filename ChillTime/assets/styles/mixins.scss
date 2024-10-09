@@ -1,0 +1,53 @@
+// フレックスボックスでセンタリング
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// テキストの省略（...表示）
+@mixin text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// clearfix（浮動要素のクリア）
+@mixin clearfix {
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+
+// メディアクエリの簡略化
+// 使い方: @include respond-to('tablet') { ... }
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "ブレークポイント #{$breakpoint} は定義されていません。";
+  }
+}
+
+// ボックスサイズを指定
+@mixin box-sizing($type) {
+  -webkit-box-sizing: $type;
+     -moz-box-sizing: $type;
+          box-sizing: $type;
+}
+
+// トランジションの簡略化
+@mixin transition($property, $duration, $ease: ease-in-out) {
+  transition: $property $duration $ease;
+}
+
+// フォント設定
+@mixin font-setting($size, $weight: normal) {
+  font-size: $size;
+  font-weight: $weight;
+  line-height: 1.5;
+}

@@ -1,0 +1,152 @@
+@use "sass:color";
+
+@import "@fortawesome/fontawesome-svg-core/styles.css";
+
+// 変数とミックスインのインポート
+@import "variables";
+@import "mixins";
+
+// リセットスタイル
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  @include box-sizing(border-box);
+}
+
+// 基本のスタイル
+body {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  color: $text-color;
+  background-color: $background-color;
+  overflow: hidden; // スクロールバーを非表示
+}
+
+// ヘッダーのスタイル
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: $primary-color;
+  color: $white-color;
+  z-index: $z-index-header;
+  padding: 0 $spacing-unit;
+  @include flex-center;
+}
+
+// ウィジェットエリア
+.widget-area {
+  position: relative;
+  width: 100%;
+  height: 100vh; // ヘッダー分を差し引く
+  overflow: hidden;
+}
+
+// ウィジェットのスタイル
+.widget {
+  position: absolute;
+  background-color: $white-color;
+  border: 1px solid color.adjust($text-color, $lightness: 40%);
+  border-radius: $border-radius-base;
+  box-shadow: $box-shadow-base;
+  padding: $spacing-unit;
+
+  // タイトルバー
+  .widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: calc($spacing-unit / 2);
+
+    .widget-title {
+      font-size: $font-size-base;
+      font-weight: bold;
+    }
+
+    .widget-controls {
+      display: flex;
+      gap: calc($spacing-unit / 2);
+
+      .control-button {
+        width: 24px;
+        height: 24px;
+        background: none;
+        border: none;
+        color: $text-color;
+        cursor: pointer;
+        @include transition(color, 0.2s);
+
+        &:hover {
+          color: $accent-color;
+        }
+      }
+    }
+  }
+
+  // コンテンツエリア
+  .widget-content {
+    // 各ウィジェット固有のスタイルをここに記述
+  }
+}
+
+// モーダルのスタイル
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($black-color, 0.5);
+  z-index: $z-index-modal;
+  @include flex-center;
+
+  .modal-content {
+    background-color: $white-color;
+    padding: calc($spacing-unit * 2);
+    border-radius: $border-radius-base;
+    width: 80%;
+    max-width: 600px;
+  }
+}
+
+// ウィジェット追加パネル
+.widget-add-panel {
+  position: fixed;
+  right: 0;
+  top: 60px; // ヘッダーの下に配置
+  width: 300px;
+  height: calc(100vh - 60px);
+  background-color: $white-color;
+  border-left: 1px solid color.adjust($text-color, $lightness: 40%);
+  box-shadow: -2px 0 4px rgba($black-color, 0.1);
+  z-index: $z-index-header;
+  padding: $spacing-unit;
+
+  .widget-list {
+    list-style: none;
+
+    .widget-item {
+      margin-bottom: $spacing-unit;
+      padding: $spacing-unit;
+      background-color: color.adjust($background-color, $lightness: 40%);
+      border-radius: $border-radius-base;
+      cursor: pointer;
+      @include transition(background-color, 0.2s);
+
+      &:hover {
+        background-color: color.adjust($background-color, $lightness: 40%);
+      }
+    }
+  }
+}
+
+// レスポンシブ対応（必要に応じて）
+@include respond-to("tablet") {
+  .widget {
+    // タブレット向けのスタイル
+  }
+}

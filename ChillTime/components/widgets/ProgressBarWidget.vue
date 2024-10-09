@@ -1,22 +1,17 @@
 <template>
   <div class="widget progressbar-widget">
-    <div class="widget-header">
-      <span class="widget-title">{{ title }}</span>
-      <div class="widget-controls">
-        <button class="control-button" @click="removeWidget">
-          <FontAwesomeIcon :icon="['fas', 'times']" />
-        </button>
-      </div>
-    </div>
+    <WidgetHeader
+      :title="title"
+      @remove="removeWidget"
+      @update:title="(v) => (title = v)"
+    />
     <div class="widget-content">
       <div class="progress-info">
         <span>{{ progress }}%</span>
-        <input type="range" min="0" max="100" v-model.number="progress" />
       </div>
-      <div class="progress-bar">
+      <div class="progress-bar" @click="updateProgress">
         <div class="progress-fill" :style="{ width: progress + '%' }"></div>
       </div>
-      <input type="text" v-model="title" placeholder="タイトルを入力" />
     </div>
   </div>
 </template>
@@ -28,18 +23,30 @@ const props = defineProps<{
   id: string;
 }>();
 
-const emit = defineEmits(["remove"]);
+const emit = defineEmits(["remove", "update:title"]);
 
 function removeWidget() {
   emit("remove", props.id);
 }
 
-const progress = ref(0);
+const progress = ref(5);
 const title = ref("進捗バー");
 
 watch([progress, title], () => {
   // 必要に応じてローカルストレージに保存
 });
+
+const min = 0;
+const max = 100;
+
+// クリックした位置に応じて進捗を更新する関数
+function updateProgress(event: MouseEvent) {
+  const bar = event.currentTarget as HTMLElement;
+  const rect = bar.getBoundingClientRect();
+  const clickPosition = event.clientX - rect.left;
+  const newProgress = Math.round((clickPosition / rect.width) * 100);
+  progress.value = Math.max(min, Math.min(max, newProgress)); // 0〜100に制限
+}
 </script>
 
 <style scoped lang="scss">
@@ -47,36 +54,30 @@ watch([progress, title], () => {
 @import "@/assets/styles/variables.scss";
 
 .progressbar-widget {
+  min-width: 320px;
+
   .progress-info {
     display: flex;
     align-items: center;
     gap: $spacing-unit;
     margin-bottom: $spacing-unit;
-
-    input[type="range"] {
-      flex: 1;
-    }
   }
 
   .progress-bar {
     width: 100%;
     height: 20px;
-    background-color: color.adjust($background-color, $lightness: 10%);
+    background-color: var(--theme-color-light);
     border-radius: $border-radius-base;
     overflow: hidden;
     margin-bottom: $spacing-unit;
+    cursor: pointer;
+    position: relative;
 
     .progress-fill {
       height: 100%;
-      background-color: $primary-color;
+      background-color: var(--theme-color-dark);
+      transition: width 0.2s ease;
     }
-  }
-
-  input[type="text"] {
-    width: 100%;
-    padding: calc($spacing-unit / 2);
-    border: 1px solid color.adjust($text-color, $lightness: 60%);
-    border-radius: $border-radius-base;
   }
 }
 </style>

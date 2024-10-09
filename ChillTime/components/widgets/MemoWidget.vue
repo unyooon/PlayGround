@@ -1,13 +1,10 @@
 <template>
   <div class="widget memo-widget">
-    <div class="widget-header">
-      <span class="widget-title">メモ</span>
-      <div class="widget-controls">
-        <button class="control-button" @click="removeWidget">
-          <FontAwesomeIcon :icon="['fas', 'times']" />
-        </button>
-      </div>
-    </div>
+    <WidgetHeader
+      :title="title"
+      @remove="removeWidget"
+      @update:title="(v) => (title = v)"
+    />
     <div class="widget-content">
       <textarea v-model="memoContent" placeholder="ここにメモを入力"></textarea>
     </div>
@@ -28,6 +25,7 @@ function removeWidget() {
 }
 
 const memoContent = ref(localStorage.getItem(`memo-${props.id}`) || "");
+const title = ref("メモ");
 
 watch(memoContent, (newValue) => {
   localStorage.setItem(`memo-${props.id}`, newValue);
@@ -39,13 +37,26 @@ watch(memoContent, (newValue) => {
 @import "@/assets/styles/variables.scss";
 
 .memo-widget {
+  background-color: #ffffff; // 白を基調とした背景色
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+
   textarea {
     width: 100%;
-    height: 200px;
+    height: 100%;
     padding: $spacing-unit;
-    border: 1px solid color.adjust($text-color, $lightness: 60%);
-    border-radius: $border-radius-base;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     resize: none;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9; // 明るい背景色
+    font-family: "Roboto", sans-serif; // モダンなフォント
+    transition: box-shadow 0.3s, border-color 0.3s;
+
+    &:focus {
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+      border-color: #007bff; // フォーカス時のボーダー色を変更
+      outline: none;
+    }
   }
 }
 </style>

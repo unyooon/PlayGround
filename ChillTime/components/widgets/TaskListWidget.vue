@@ -1,13 +1,10 @@
 <template>
   <div class="widget tasklist-widget">
-    <div class="widget-header">
-      <span class="widget-title">タスクリスト</span>
-      <div class="widget-controls">
-        <button class="control-button" @click="removeWidget">
-          <FontAwesomeIcon :icon="['fas', 'times']" />
-        </button>
-      </div>
-    </div>
+    <WidgetHeader
+      :title="title"
+      @remove="removeWidget"
+      @update:title="(v) => (title = v)"
+    />
     <div class="widget-content">
       <ul class="task-list">
         <li
@@ -58,6 +55,7 @@ function removeWidget() {
 
 const tasks = ref<Task[]>([]);
 const newTaskText = ref("");
+const title = ref("タスクリスト");
 
 function addTask() {
   if (newTaskText.value.trim() !== "") {
@@ -127,7 +125,7 @@ function deleteTask(id: number) {
 
     button {
       padding: 0 $spacing-unit;
-      background-color: $primary-color;
+      background-color: var(--theme-color);
       border: none;
       color: $white-color;
       border-radius: 0 $border-radius-base $border-radius-base 0;

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-interface Settings {
+export interface Settings {
   backgroundImage: string;
   themeColor: string;
   fontSize: number;
@@ -14,7 +14,7 @@ export const useSettingsStore = defineStore("settings", {
   }),
   actions: {
     updateSettings(settings: Partial<Settings>) {
-      Object.assign(this.$state, settings);
+      this.$state = { ...this.$state, ...settings };
     },
   },
 });

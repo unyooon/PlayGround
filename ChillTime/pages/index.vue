@@ -5,10 +5,9 @@
       :is="widget.component"
       :key="widget.id"
       :id="widget.id"
-      class="draggable-widget"
       :style="{ left: widget.position.x + 'px', top: widget.position.y + 'px' }"
       v-draggable="{
-        handle: '.widget-header',
+        handle: '.widget-grab-bar',
         onDragend: (position: Position) => updateWidgetPosition(widget.id, position),
       }"
       @remove="removeWidget"
@@ -25,6 +24,8 @@ import CalendarWidget from "@/components/widgets/CalendarWidget.vue";
 import TaskListWidget from "@/components/widgets/TaskListWidget.vue";
 import MemoWidget from "@/components/widgets/MemoWidget.vue";
 import ProgressBarWidget from "@/components/widgets/ProgressBarWidget.vue";
+import YouTubePlayerWidget from "~/components/widgets/YouTubePlayerWidget.vue";
+
 import { type Widget } from "~/store/widget";
 
 const widgetStore = useWidgetsStore();
@@ -40,6 +41,7 @@ const widgetComponents = {
   TaskListWidget,
   MemoWidget,
   ProgressBarWidget,
+  YouTubePlayerWidget,
 };
 
 const widgets = computed(() =>
@@ -64,9 +66,5 @@ function removeWidget(id: string) {
   width: 100%;
   height: 100vh;
   overflow: hidden;
-}
-
-.draggable-widget {
-  position: absolute;
 }
 </style>

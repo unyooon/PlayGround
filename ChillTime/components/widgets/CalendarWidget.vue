@@ -1,13 +1,10 @@
 <template>
   <div class="widget calendar-widget">
-    <div class="widget-header">
-      <span class="widget-title">カレンダー</span>
-      <div class="widget-controls">
-        <button class="control-button" @click="removeWidget">
-          <FontAwesomeIcon :icon="['fas', 'times']" />
-        </button>
-      </div>
-    </div>
+    <WidgetHeader
+      :title="title"
+      @remove="removeWidget"
+      @update:title="(v) => (title = v)"
+    />
     <div class="widget-content">
       <div class="calendar">
         <div class="calendar-header">
@@ -49,6 +46,7 @@ function removeWidget() {
 const today = new Date();
 const currentYear = ref(today.getFullYear());
 const currentMonth = ref(today.getMonth());
+const title = ref("カレンダー");
 
 const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
 
@@ -131,7 +129,7 @@ function nextMonth() {
         border-radius: $border-radius-base;
 
         &.today {
-          background-color: $primary-color;
+          background-color: var(--theme-color);
           color: $white-color;
         }
       }

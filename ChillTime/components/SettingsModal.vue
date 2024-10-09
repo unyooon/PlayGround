@@ -10,12 +10,21 @@
       <!-- テーマカラー選択 -->
       <div class="setting-group">
         <label>テーマカラー</label>
-        <input type="color" v-model="themeColor" />
+        <input
+          :value="settings.themeColor"
+          type="color"
+          @change="changeColor"
+        />
       </div>
       <!-- フォントサイズ設定 -->
       <div class="setting-group">
         <label>フォントサイズ</label>
-        <input type="number" v-model.number="fontSize" min="12" max="24" />
+        <input
+          type="number"
+          v-model.number="settings.fontSize"
+          min="12"
+          max="24"
+        />
       </div>
       <!-- ボタン -->
       <div class="modal-actions">
@@ -28,6 +37,9 @@
 
 <script setup lang="ts">
 import { defineProps, defineEmits, ref } from "vue";
+import { useSettingsStore } from "~/store";
+
+const settingsStore = useSettingsStore();
 
 const props = defineProps<{
   isOpen: boolean;
@@ -35,8 +47,7 @@ const props = defineProps<{
 
 const emit = defineEmits(["close", "updateSettings"]);
 
-const themeColor = ref("#3498db");
-const fontSize = ref(16);
+const settings = ref(settingsStore.$state);
 
 function uploadBackground(event: Event) {
   const target = event.target as HTMLInputElement;
@@ -53,11 +64,17 @@ function uploadBackground(event: Event) {
   }
 }
 
+function changeColor(event: Event) {
+  const target = event.target as HTMLInputElement;
+  settingsStore.updateSettings({ themeColor: target.value });
+}
+
 function saveSettings() {
   // 設定の保存処理
   emit("updateSettings", {
-    themeColor: themeColor.value,
-    fontSize: fontSize.value,
+    backgroundImage: settings.value.backgroundImage,
+    themeColor: settings.value.themeColor,
+    fontSize: settings.value.fontSize,
   });
   closeModal();
 }
@@ -123,12 +140,12 @@ function closeModal() {
         cursor: pointer;
 
         &:first-child {
-          background-color: $primary-color;
+          background-color: var(--theme-color);
           color: $white-color;
         }
 
         &:last-child {
-          background-color: color.adjust($primary-color, $lightness: 30%);
+          background-color: var(--theme-color-light);
           color: $white-color;
         }
       }

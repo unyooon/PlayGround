@@ -1,13 +1,10 @@
 <template>
   <div class="widget clock-widget">
-    <div class="widget-header">
-      <span class="widget-title">時計</span>
-      <div class="widget-controls">
-        <button class="control-button" @click="removeWidget">
-          <FontAwesomeIcon :icon="['fas', 'times']" />
-        </button>
-      </div>
-    </div>
+    <WidgetHeader
+      :title="title"
+      @remove="removeWidget"
+      @update:title="(v) => (title = v)"
+    />
     <div class="widget-content">
       <div class="time-display">{{ formattedTime }}</div>
     </div>
@@ -21,11 +18,11 @@ const props = defineProps<{
   id: string;
 }>();
 
-const emit = defineEmits(["remove"]);
+const emit = defineEmits(["remove", "update:title"]);
 
 const time = ref(new Date());
-
 const formattedTime = ref("");
+const title = ref("時計");
 
 let timer: NodeJS.Timeout;
 
@@ -56,6 +53,8 @@ onBeforeUnmount(() => {
     font-size: 48px;
     font-weight: bold;
     text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-family: "Roboto", sans-serif; // モダンなフォントに変更
   }
 }
 </style>

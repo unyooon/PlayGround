@@ -16,7 +16,12 @@ import {
   faStickyNote,
   faChartLine,
   faTimes,
+  faEdit,
+  faPlay,
+  faPause,
 } from "@fortawesome/free-solid-svg-icons";
+
+import { faYoutube } from "@fortawesome/free-brands-svg-icons";
 
 // アイコンをライブラリに追加
 library.add(
@@ -28,7 +33,11 @@ library.add(
   faTasks,
   faStickyNote,
   faChartLine,
-  faTimes
+  faTimes,
+  faEdit,
+  faYoutube,
+  faPlay,
+  faPause
 );
 
 export default defineNuxtPlugin((nuxtApp) => {

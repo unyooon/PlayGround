@@ -8,7 +8,7 @@
         :key="widget.name"
         @click="addWidget(widget.name)"
       >
-        <FontAwesomeIcon :icon="['fas', widget.icon]" />
+        <FontAwesomeIcon :icon="widget.icon" />
         <span>{{ widget.displayName }}</span>
       </li>
     </ul>
@@ -32,11 +32,28 @@ const props = defineProps<{
 const emit = defineEmits(["addWidget", "close"]);
 
 const widgets: Widget[] = [
-  { name: "ClockWidget", displayName: "時計", icon: "clock" },
-  { name: "CalendarWidget", displayName: "カレンダー", icon: "calendar-alt" },
-  { name: "TaskListWidget", displayName: "タスクリスト", icon: "tasks" },
-  { name: "MemoWidget", displayName: "メモ", icon: "sticky-note" },
-  { name: "ProgressBarWidget", displayName: "進捗バー", icon: "chart-line" },
+  { name: "ClockWidget", displayName: "時計", icon: ["fas", "clock"] },
+  {
+    name: "CalendarWidget",
+    displayName: "カレンダー",
+    icon: ["fas", "calendar-alt"],
+  },
+  {
+    name: "TaskListWidget",
+    displayName: "タスクリスト",
+    icon: ["fas", "tasks"],
+  },
+  { name: "MemoWidget", displayName: "メモ", icon: ["fas", "sticky-note"] },
+  {
+    name: "ProgressBarWidget",
+    displayName: "進捗バー",
+    icon: ["fas", "chart-line"],
+  },
+  {
+    name: "YouTubePlayerWidget",
+    displayName: "YouTuberプレーヤー",
+    icon: ["fab", "youtube"],
+  },
 ];
 
 function addWidget(widgetName: string) {

@@ -17,11 +17,11 @@
       @addWidget="addWidget"
     />
     <!-- 設定ボタン -->
-    <button class="settings-button" @click="isSettingsModalOpen = true">
+    <button class="settings-button theme" @click="isSettingsModalOpen = true">
       <FontAwesomeIcon :icon="['fas', 'cog']" />
     </button>
     <!-- ウィジェット追加ボタン -->
-    <button class="widget-add-button" @click="isWidgetPanelOpen = true">
+    <button class="widget-add-button theme" @click="isWidgetPanelOpen = true">
       <FontAwesomeIcon :icon="['fas', 'plus']" />
     </button>
   </div>
@@ -30,9 +30,12 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useWidgetsStore, useSettingsStore } from "~/store";
+
 import SettingsModal from "@/components/SettingsModal.vue";
 import WidgetAddPanel from "@/components/WidgetAddPanel.vue";
-import type { WidgetName } from "../store/widget";
+
+import type { WidgetName } from "~/store/widget";
+import type { Settings } from "~/store/settings";
 
 const isSettingsModalOpen = ref(false);
 const isWidgetPanelOpen = ref(false);
@@ -40,7 +43,7 @@ const isWidgetPanelOpen = ref(false);
 const widgetStore = useWidgetsStore();
 const settingsStore = useSettingsStore();
 
-function updateSettings(settings: any) {
+function updateSettings(settings: Settings) {
   settingsStore.updateSettings(settings);
 }
 
@@ -67,7 +70,7 @@ const backgroundStyle = computed(() => {
   bottom: calc($spacing-unit * 2);
   width: 50px;
   height: 50px;
-  background-color: $primary-color;
+  background-color: var(--theme-color);
   color: $white-color;
   border: none;
   border-radius: 50%;
@@ -78,7 +81,7 @@ const backgroundStyle = computed(() => {
   justify-content: center;
 
   &:hover {
-    background-color: color.adjust($primary-color, $lightness: -10%);
+    background-color: var(--theme-color-dark);
   }
 }
 

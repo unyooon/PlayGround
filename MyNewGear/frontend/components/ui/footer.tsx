@@ -1,4 +1,4 @@
-export function Footer() {
+export default function Footer() {
   return (
     <footer className="bg-white py-6">
       <div className="container mx-auto flex items-center justify-between px-4 md:px-6">

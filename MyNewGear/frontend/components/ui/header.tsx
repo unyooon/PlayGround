@@ -1,13 +1,24 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
-export function Header() {
+export default function Header() {
   return (
     <header className="sticky top-0 z-20 bg-white/80 backdrop-blur">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
-        <Link href="#" className="flex items-center gap-2 font-bold text-primary" prefetch={false}>
+        <Link
+          href="#"
+          className="flex items-center gap-2 font-bold text-primary"
+          prefetch={false}
+        >
           <CaravanIcon className="h-6 w-6" />
           <span>Campify</span>
         </Link>
@@ -28,18 +39,29 @@ export function Header() {
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-card shadow-lg rounded-lg">
-              <DropdownMenuLabel className="text-primary font-medium">John Doe</DropdownMenuLabel>
+            <DropdownMenuContent
+              align="end"
+              className="bg-card shadow-lg rounded-lg"
+            >
+              <DropdownMenuLabel className="text-primary font-medium">
+                John Doe
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="hover:bg-muted transition-colors">My Listings</DropdownMenuItem>
-              <DropdownMenuItem className="hover:bg-muted transition-colors">Settings</DropdownMenuItem>
-              <DropdownMenuItem className="hover:bg-muted transition-colors">Logout</DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-muted transition-colors">
+                My Listings
+              </DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-muted transition-colors">
+                Settings
+              </DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-muted transition-colors">
+                Logout
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>
     </header>
-  )
+  );
 }
 
 function CaravanIcon(props) {
@@ -62,5 +84,5 @@ function CaravanIcon(props) {
       <circle cx="8" cy="19" r="2" />
       <path d="M10 19h12v-2" />
     </svg>
-  )
+  );
 }

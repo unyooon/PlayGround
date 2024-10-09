@@ -9,13 +9,10 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Header } from "@/components/ui/header"; // Headerをインポート
-import { Footer } from "@/components/ui/footer"; // Footerをインポート
 
 export function Component() {
   return (
     <div className="min-h-screen bg-white text-foreground">
-      <Header />
       <main className="container mx-auto py-8 px-4 md:px-6">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           <div className="group relative overflow-hidden rounded-lg shadow-lg transition-all hover:shadow-xl">
@@ -63,7 +60,6 @@ export function Component() {
           {/* Other gear items go here */}
         </div>
       </main>
-      <Footer /> {/* Footerを追加 */}
     </div>
   );
 }

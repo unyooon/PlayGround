@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ChillTime
+        working-directory: ./ChillTime
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4

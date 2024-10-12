@@ -23,6 +23,7 @@ import {
   faForward,
   faEyeSlash,
   faEye,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { faYoutube } from "@fortawesome/free-brands-svg-icons";
@@ -45,7 +46,8 @@ library.add(
   faPlayCircle,
   faForward,
   faEyeSlash,
-  faEye
+  faEye,
+  faTrash
 );
 
 export default defineNuxtPlugin((nuxtApp) => {

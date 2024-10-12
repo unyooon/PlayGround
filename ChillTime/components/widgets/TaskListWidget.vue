@@ -10,7 +10,7 @@
         <input
           type="text"
           v-model="newTaskText"
-          @keyup.enter="addTask"
+          @keypress.enter="addTask"
           placeholder="新しいタスク"
         />
         <button @click="addTask">
@@ -83,6 +83,8 @@ function deleteTask(id: number) {
     padding: 0;
     margin: 0;
     margin-top: 12px;
+    max-height: calc(100% - 40px);
+    overflow-y: auto;
 
     li {
       display: flex;
@@ -103,6 +105,10 @@ function deleteTask(id: number) {
       input[type="checkbox"] {
         margin-right: $spacing-unit;
         accent-color: $accent-color;
+      }
+
+      span {
+        flex-grow: 2;
       }
 
       .delete-button {

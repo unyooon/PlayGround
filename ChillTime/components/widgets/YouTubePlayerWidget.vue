@@ -57,7 +57,7 @@
         </button>
       </div>
       <div ref="playerContainer" class="player-container"></div>
-      <ul class="queue-list">
+      <ul v-show="videoQueue.length > 0" class="queue-list">
         <li
           v-for="(videoId, index) in videoQueue"
           :key="index"
@@ -68,6 +68,7 @@
             :icon="['fas', 'play-circle']"
             class="playing-icon"
           />
+          <div v-else class="playing-icon"></div>
           {{ videoId }}
         </li>
       </ul>
@@ -312,7 +313,6 @@ onBeforeUnmount(() => {
 
   .player-container {
     width: 100%;
-    height: 240px; // サイズを小さく調整
     background-color: #000;
     margin-top: 15px;
     border-radius: 8px;

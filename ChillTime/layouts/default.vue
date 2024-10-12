@@ -56,7 +56,11 @@ const backgroundStyle = computed(() => {
   const backgroundImage = settingsStore.backgroundImage;
   return backgroundImage
     ? { backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover" }
-    : {};
+    : { backgroundColor: "#F8F8FF" };
+});
+
+window.addEventListener("beforeunload", () => {
+  widgetStore.saveWidgets();
 });
 </script>
 

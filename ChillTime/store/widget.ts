@@ -38,5 +38,14 @@ export const useWidgetsStore = defineStore("widgets", {
         widget.position = position;
       }
     },
+    saveWidgets() {
+      saveToLocalStorage("widgets", this.widgets);
+    },
+    loadWidgets() {
+      const widgets = loadFromLocalStorage<Widget[]>("widgets");
+      if (widgets) {
+        this.widgets = widgets;
+      }
+    },
   },
 });

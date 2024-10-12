@@ -15,6 +15,16 @@ export const useSettingsStore = defineStore("settings", {
   actions: {
     updateSettings(settings: Partial<Settings>) {
       this.$state = { ...this.$state, ...settings };
+      this.saveSettings();
+    },
+    saveSettings() {
+      saveToLocalStorage("settings", this.$state);
+    },
+    loadSettings() {
+      const settings = loadFromLocalStorage<Settings>("settings");
+      if (settings) {
+        this.$state = settings;
+      }
     },
   },
 });

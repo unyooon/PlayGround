@@ -6,7 +6,7 @@
         class="widget-item"
         v-for="widget in widgets"
         :key="widget.name"
-        @click="addWidget(widget.name)"
+        @click="addWidget(widget.name, widget.defaultSize)"
       >
         <FontAwesomeIcon :icon="widget.icon" />
         <span>{{ widget.displayName }}</span>
@@ -23,6 +23,7 @@ interface Widget {
   name: string;
   displayName: string;
   icon: any;
+  defaultSize: { width: number; height: number };
 }
 
 const props = defineProps<{
@@ -32,32 +33,49 @@ const props = defineProps<{
 const emit = defineEmits(["addWidget", "close"]);
 
 const widgets: Widget[] = [
-  { name: "ClockWidget", displayName: "時計", icon: ["fas", "clock"] },
+  {
+    name: "ClockWidget",
+    displayName: "時計",
+    icon: ["fas", "clock"],
+    defaultSize: { width: 320, height: 160 },
+  },
   {
     name: "CalendarWidget",
     displayName: "カレンダー",
     icon: ["fas", "calendar-alt"],
+    defaultSize: { width: 200, height: 300 },
   },
   {
     name: "TaskListWidget",
     displayName: "タスクリスト",
     icon: ["fas", "tasks"],
+    defaultSize: { width: 400, height: 600 },
   },
-  { name: "MemoWidget", displayName: "メモ", icon: ["fas", "sticky-note"] },
+  {
+    name: "MemoWidget",
+    displayName: "メモ",
+    icon: ["fas", "sticky-note"],
+    defaultSize: { width: 400, height: 400 },
+  },
   {
     name: "ProgressBarWidget",
     displayName: "進捗バー",
     icon: ["fas", "chart-line"],
+    defaultSize: { width: 320, height: 140 },
   },
   {
     name: "YouTubePlayerWidget",
     displayName: "YouTuberプレーヤー",
     icon: ["fab", "youtube"],
+    defaultSize: { width: 700, height: 600 },
   },
 ];
 
-function addWidget(widgetName: string) {
-  emit("addWidget", widgetName);
+function addWidget(
+  widgetName: string,
+  size: { width: number; height: number }
+) {
+  emit("addWidget", widgetName, size);
 }
 
 function closePanel() {

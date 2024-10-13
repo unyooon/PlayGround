@@ -1,5 +1,5 @@
 <template>
-  <div class="widget clock-widget">
+  <div class="widget clock-widget" :id="id">
     <WidgetHeader
       :title="title"
       @remove="removeWidget"

@@ -1,5 +1,5 @@
 <template>
-  <div class="widget progressbar-widget">
+  <div class="widget progressbar-widget" :id="id">
     <WidgetHeader
       :title="title"
       @remove="removeWidget"

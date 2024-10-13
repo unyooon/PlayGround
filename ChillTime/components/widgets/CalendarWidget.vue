@@ -1,5 +1,5 @@
 <template>
-  <div class="widget calendar-widget">
+  <div class="widget calendar-widget" :id="id">
     <WidgetHeader
       :title="title"
       @remove="removeWidget"

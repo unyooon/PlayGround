@@ -7,12 +7,39 @@ export type WidgetName =
   | "MemoWidget"
   | "ProgressBarWidget";
 
-export interface Widget {
+export interface Widget extends WidgetOptions {
   id: string;
   name: WidgetName;
   position: {
     x: number;
     y: number;
+  };
+  size: {
+    width: number;
+    height: number;
+  };
+}
+
+export interface WidgetAddOptions extends WidgetOptions {
+  name: WidgetName;
+  size: {
+    width: number;
+    height: number;
+  };
+}
+
+export interface WidgetOptions {
+  name?: WidgetName;
+  position?: {
+    x: number;
+    y: number;
+  };
+  size?: {
+    width: number;
+    height: number;
+  };
+  YouTubePlayerOptions?: {
+    videoUrls: string[];
   };
 }
 
@@ -21,22 +48,31 @@ export const useWidgetsStore = defineStore("widgets", {
     widgets: [] as Widget[],
   }),
   actions: {
-    addWidget(widgetName: WidgetName) {
+    addWidget(options: WidgetAddOptions) {
       const id = Date.now().toString();
       this.widgets.push({
         id,
-        name: widgetName,
+        name: options.name,
         position: { x: 100, y: 100 },
+        size: options.size,
       });
     },
     removeWidget(id: string) {
       this.widgets = this.widgets.filter((widget) => widget.id !== id);
     },
-    updateWidgetPosition(id: string, position: { x: number; y: number }) {
-      const widget = this.widgets.find((widget) => widget.id === id);
-      if (widget) {
-        widget.position = position;
+    updateWidget(id: string, options: WidgetOptions) {
+      const widgetIndex = this.widgets.findIndex((widget) => widget.id === id);
+      if (widgetIndex !== -1) {
+        this.widgets[widgetIndex] = {
+          ...this.widgets[widgetIndex],
+          ...options,
+        };
       }
+      console.log(options);
+      console.log(this.widgets);
+    },
+    clearWidget() {
+      this.widgets = [];
     },
     saveWidgets() {
       saveToLocalStorage("widgets", this.widgets);

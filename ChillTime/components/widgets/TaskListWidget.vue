@@ -1,5 +1,5 @@
 <template>
-  <div class="widget tasklist-widget">
+  <div class="widget tasklist-widget" :id="id">
     <WidgetHeader
       :title="title"
       @remove="removeWidget"

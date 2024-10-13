@@ -24,6 +24,10 @@
     <button class="widget-add-button theme" @click="isWidgetPanelOpen = true">
       <FontAwesomeIcon :icon="['fas', 'plus']" />
     </button>
+    <!-- ウィジェット削除 -->
+    <button class="widget-delete-button theme" @click="clearWidgets()">
+      <FontAwesomeIcon :icon="['fas', 'trash']" />
+    </button>
   </div>
 </template>
 
@@ -47,9 +51,16 @@ function updateSettings(settings: Settings) {
   settingsStore.updateSettings(settings);
 }
 
-function addWidget(widgetName: WidgetName) {
-  widgetStore.addWidget(widgetName);
+function addWidget(
+  widgetName: WidgetName,
+  size: { width: number; height: number }
+) {
+  widgetStore.addWidget({ name: widgetName, size });
   isWidgetPanelOpen.value = false;
+}
+
+function clearWidgets() {
+  widgetStore.clearWidget();
 }
 
 const backgroundStyle = computed(() => {
@@ -69,7 +80,8 @@ window.addEventListener("beforeunload", () => {
 @import "@/assets/styles/variables.scss";
 
 .settings-button,
-.widget-add-button {
+.widget-add-button,
+.widget-delete-button {
   position: fixed;
   bottom: calc($spacing-unit * 2);
   width: 50px;
@@ -94,6 +106,10 @@ window.addEventListener("beforeunload", () => {
 }
 
 .widget-add-button {
+  right: calc($spacing-unit * 2 + 120px);
+}
+
+.widget-delete-button {
   right: calc($spacing-unit * 2 + 60px);
 }
 </style>

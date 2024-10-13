@@ -1,5 +1,5 @@
 <template>
-  <div class="widget youtube-widget">
+  <div class="widget youtube-widget" :id="id">
     <WidgetHeader
       :title="title"
       @remove="removeWidget"
@@ -77,18 +77,27 @@
 </template>
 
 <script setup lang="ts">
+import { useWidgetsStore } from "~/store/widget";
+
+const widgetStore = useWidgetsStore();
+
 const props = defineProps<{
   id: string;
 }>();
 
-const emit = defineEmits(["remove", "update:title"]);
+const emit = defineEmits(["remove", "updateOptions"]);
+
+const widget = widgetStore.widgets.find((widget) => widget.id === props.id);
+const defaultOptions = widget?.YouTubePlayerOptions || {
+  videoUrls: [],
+};
 
 const title = ref("YouTube Player");
 const videoUrl = ref("");
 let player: YT.Player | null = null;
 const playerContainer = ref<HTMLElement | null>(null);
 const isPlaying = ref(false);
-const videoQueue = ref<string[]>([]);
+const videoQueue = ref<string[]>(defaultOptions.videoUrls);
 const isHiddenPlayer = ref(false);
 
 const isValidUrl = computed(() => {
@@ -103,6 +112,8 @@ function hiddenPlayer() {
     iframeEl.style.opacity = "0";
     isHiddenPlayer.value = true;
   }
+
+  updateOptions();
 }
 
 function showPlayer() {
@@ -113,6 +124,16 @@ function showPlayer() {
     iframeEl.style.opacity = "1";
     isHiddenPlayer.value = false;
   }
+
+  updateOptions();
+}
+
+function updateOptions() {
+  emit("updateOptions", props.id, {
+    YouTubePlayerOptions: {
+      videoUrls: videoQueue.value,
+    },
+  });
 }
 
 function removeWidget() {
@@ -133,6 +154,7 @@ function resetState() {
 function addToQueue() {
   videoQueue.value.push(videoUrl.value);
   videoUrl.value = "";
+  updateOptions();
 }
 
 function playNextVideo() {

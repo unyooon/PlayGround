@@ -68,8 +68,6 @@ export const useWidgetsStore = defineStore("widgets", {
           ...options,
         };
       }
-      console.log(options);
-      console.log(this.widgets);
     },
     clearWidget() {
       this.widgets = [];

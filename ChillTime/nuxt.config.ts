@@ -9,10 +9,6 @@ export default defineNuxtConfig({
   // モジュールの設定
   modules: ["@pinia/nuxt"],
 
-  router: {
-    middleware: ["load"],
-  },
-
   vite: {
     css: {
       preprocessorOptions: {

@@ -9,7 +9,7 @@ export interface Settings {
 export const useSettingsStore = defineStore("settings", {
   state: (): Settings => ({
     backgroundImage: "",
-    themeColor: "#3498db",
+    themeColor: "#8C7B75",
     fontSize: 16,
   }),
   actions: {

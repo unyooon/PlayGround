@@ -92,7 +92,7 @@ const defaultOptions = widget?.YouTubePlayerOptions || {
   videoUrls: [],
 };
 
-const title = ref("YouTube Player");
+const title = ref("YouTube");
 const videoUrl = ref("");
 let player: YT.Player | null = null;
 const playerContainer = ref<HTMLElement | null>(null);

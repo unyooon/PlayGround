@@ -32,6 +32,7 @@ import TaskListWidget from "@/components/widgets/TaskListWidget.vue";
 import MemoWidget from "@/components/widgets/MemoWidget.vue";
 import ProgressBarWidget from "@/components/widgets/ProgressBarWidget.vue";
 import YouTubePlayerWidget from "~/components/widgets/YouTubePlayerWidget.vue";
+import PomodoroTimerWidget from "~/components/widgets/PomodoroTimerWidget.vue";
 
 import type { Widget, WidgetOptions } from "~/store/widget";
 
@@ -50,6 +51,7 @@ const widgetComponents = {
   MemoWidget,
   ProgressBarWidget,
   YouTubePlayerWidget,
+  PomodoroTimerWidget,
 };
 
 const widgets = computed(() =>
@@ -79,7 +81,7 @@ const observer = new ResizeObserver((entries) => {
   for (const entry of entries) {
     const widgetElement = entry.target;
     const id = widgetElement.id;
-    const borderSize = 2;
+    const borderSize = 0;
     const size = {
       width: entry.contentRect.width + borderSize,
       height: entry.contentRect.height + borderSize,

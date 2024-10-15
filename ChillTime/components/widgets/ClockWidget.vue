@@ -22,7 +22,7 @@ const emit = defineEmits(["remove", "update:title"]);
 
 const time = ref(new Date());
 const formattedTime = ref("");
-const title = ref("時計");
+const title = ref("Clock");
 
 let timer: NodeJS.Timeout;
 
@@ -49,6 +49,9 @@ onBeforeUnmount(() => {
 @import "@/assets/styles/variables.scss";
 
 .clock-widget {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  resize: none !important;
+
   .time-display {
     font-size: 48px;
     font-weight: bold;

@@ -46,7 +46,7 @@ function removeWidget() {
 const today = new Date();
 const currentYear = ref(today.getFullYear());
 const currentMonth = ref(today.getMonth());
-const title = ref("カレンダー");
+const title = ref("Calendar");
 
 const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
 

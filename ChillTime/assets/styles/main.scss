@@ -50,9 +50,9 @@ header {
 .widget {
   position: absolute;
   background-color: $white-color;
-  border: 1px solid color.adjust($text-color, $lightness: 40%);
+  // border: 1px solid color.adjust($text-color, $lightness: 40%);
   border-radius: $border-radius-base;
-  box-shadow: $box-shadow-base;
+  // box-shadow: $box-shadow-base;
   resize: both; // リサイズ可能にする
   overflow: auto; // コンテンツが溢れた場合にスクロール可能にする
 
@@ -138,12 +138,10 @@ header {
 .widget-add-panel {
   position: fixed;
   right: 0;
-  top: 60px; // ヘッダーの下に配置
+  top: 0;
   width: 300px;
-  height: calc(100vh - 60px);
+  height: 100vh;
   background-color: $white-color;
-  border-left: 1px solid color.adjust($text-color, $lightness: 40%);
-  box-shadow: -2px 0 4px rgba($black-color, 0.1);
   z-index: $z-index-header;
   padding: $spacing-unit;
 

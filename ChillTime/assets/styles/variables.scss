@@ -2,7 +2,7 @@
 $primary-color: #3498db; // メインカラー
 $secondary-color: #2ecc71; // サブカラー
 $accent-color: #e74c3c; // アクセントカラー
-$background-color: #ecf0f1; // 背景色
+$background-color: #f3e8d0; // 背景色
 $text-color: #2c3e50; // テキストカラー
 $white-color: #ffffff; // 白色
 $black-color: #000000; // 黒色
@@ -14,8 +14,8 @@ $font-size-small: 14px; // 小さいテキスト
 $font-size-large: 18px; // 大きいテキスト
 
 // スペーシング（余白）
-$spacing-unit: 8px; // 基本の余白単位
-$border-radius-base: 4px; // 基本の角丸サイズ
+$spacing-unit: 0.75rem; // 基本の余白単位
+$border-radius-base: 0.5rem; // 基本の角丸サイズ
 
 // Z-index（重なり順）
 $z-index-header: 1000;

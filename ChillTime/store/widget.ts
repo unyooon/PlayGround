@@ -5,7 +5,9 @@ export type WidgetName =
   | "CalendarWidget"
   | "TaskListWidget"
   | "MemoWidget"
-  | "ProgressBarWidget";
+  | "ProgressBarWidget"
+  | "YouTubePlayerWidget"
+  | "PomodoroTimerWidget";
 
 export interface Widget extends WidgetOptions {
   id: string;

@@ -8,7 +8,7 @@
     <div class="widget-content">
       <textarea
         :value="memoContent"
-        placeholder="ここにメモを入力"
+        placeholder="Enter your memo here"
         @change="(e: Event) => updateMemo(e.target?.value || '')"
       ></textarea>
     </div>
@@ -31,7 +31,7 @@ const memoContent = ref(
   widgetStore.widgets.find((widget) => widget.id === props.id)
     ?.MemoWidgetOptions?.text || ""
 );
-const title = ref("メモ");
+const title = ref("Memo");
 
 const removeWidget = () => {
   emit("remove", props.id);

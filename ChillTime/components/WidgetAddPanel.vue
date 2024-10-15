@@ -1,6 +1,6 @@
 <template>
-  <div class="widget-add-panel" v-if="isOpen">
-    <h2>ウィジェット追加</h2>
+  <div class="widget-add-panel">
+    <h2>Widgets</h2>
     <ul class="widget-list">
       <li
         class="widget-item"
@@ -27,7 +27,7 @@ interface Widget {
 }
 
 const props = defineProps<{
-  isOpen: boolean;
+  id: boolean;
 }>();
 
 const emit = defineEmits(["addWidget", "close"]);
@@ -35,37 +35,43 @@ const emit = defineEmits(["addWidget", "close"]);
 const widgets: Widget[] = [
   {
     name: "ClockWidget",
-    displayName: "時計",
+    displayName: "Clock",
     icon: ["fas", "clock"],
     defaultSize: { width: 320, height: 160 },
   },
   {
+    name: "PomodoroTimerWidget",
+    displayName: "Pomodoro Timer",
+    icon: ["fas", "clock"],
+    defaultSize: { width: 360, height: 440 },
+  },
+  {
     name: "CalendarWidget",
-    displayName: "カレンダー",
+    displayName: "Calendar",
     icon: ["fas", "calendar-alt"],
     defaultSize: { width: 200, height: 300 },
   },
   {
     name: "TaskListWidget",
-    displayName: "タスクリスト",
+    displayName: "Tasks",
     icon: ["fas", "tasks"],
     defaultSize: { width: 400, height: 600 },
   },
   {
     name: "MemoWidget",
-    displayName: "メモ",
+    displayName: "Memo",
     icon: ["fas", "sticky-note"],
     defaultSize: { width: 400, height: 400 },
   },
   {
     name: "ProgressBarWidget",
-    displayName: "進捗バー",
+    displayName: "Progress",
     icon: ["fas", "chart-line"],
     defaultSize: { width: 320, height: 140 },
   },
   {
     name: "YouTubePlayerWidget",
-    displayName: "YouTuberプレーヤー",
+    displayName: "YouTube",
     icon: ["fab", "youtube"],
     defaultSize: { width: 700, height: 600 },
   },
@@ -89,16 +95,6 @@ function closePanel() {
 @import "@/assets/styles/mixins.scss";
 
 .widget-add-panel {
-  position: fixed;
-  right: 0;
-  top: 0;
-  width: 300px;
-  height: 100vh;
-  background-color: $white-color;
-  border-left: 1px solid color.adjust($text-color, $lightness: 40%);
-  box-shadow: -2px 0 4px rgba($black-color, 0.1);
-  z-index: $z-index-modal;
-  padding: calc($spacing-unit * 2);
   display: flex;
   flex-direction: column;
 
@@ -119,13 +115,13 @@ function closePanel() {
       gap: $spacing-unit;
       padding: $spacing-unit;
       margin-bottom: $spacing-unit;
-      background-color: color.adjust($background-color, $lightness: 5%);
+      background-color: var(--theme-color-light-8);
       border-radius: $border-radius-base;
       cursor: pointer;
       @include transition(background-color, 0.2s);
 
       &:hover {
-        background-color: color.adjust($background-color, $lightness: 10%);
+        background-color: var(--theme-color-light-6);
       }
 
       .fa-icon {

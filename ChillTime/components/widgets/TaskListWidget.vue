@@ -11,7 +11,7 @@
           type="text"
           v-model="newTaskText"
           @keypress.enter="addTask"
-          placeholder="新しいタスク"
+          placeholder="New Task"
         />
         <button @click="addTask">
           <FontAwesomeIcon :icon="['fas', 'plus']" />
@@ -60,7 +60,7 @@ const tasks = ref<Task[]>(
     ?.TaskListWidgetOptions?.tasks || []
 );
 const newTaskText = ref("");
-const title = ref("タスクリスト");
+const title = ref("Tasks");
 
 function addTask() {
   if (newTaskText.value.trim() !== "") {

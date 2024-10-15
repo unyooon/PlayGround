@@ -30,7 +30,7 @@ function removeWidget() {
 }
 
 const progress = ref(5);
-const title = ref("進捗バー");
+const title = ref("Progress Bar");
 
 watch([progress, title], () => {
   // 必要に応じてローカルストレージに保存

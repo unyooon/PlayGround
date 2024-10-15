@@ -6,30 +6,47 @@
       @update:title="(v) => (title = v)"
     />
     <div class="widget-content">
-      <textarea v-model="memoContent" placeholder="ここにメモを入力"></textarea>
+      <textarea
+        :value="memoContent"
+        placeholder="ここにメモを入力"
+        @change="(e: Event) => updateMemo(e.target?.value || '')"
+      ></textarea>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { useWidgetsStore } from "~/store/widget";
+import type { WidgetOptions } from "~/store/widget";
 
 const props = defineProps<{
   id: string;
 }>();
 
-const emit = defineEmits(["remove"]);
+const emit = defineEmits(["remove", "updateOptions"]);
 
-function removeWidget() {
-  emit("remove", props.id);
-}
+const widgetStore = useWidgetsStore();
 
-const memoContent = ref(localStorage.getItem(`memo-${props.id}`) || "");
+const memoContent = ref(
+  widgetStore.widgets.find((widget) => widget.id === props.id)
+    ?.MemoWidgetOptions?.text || ""
+);
 const title = ref("メモ");
 
-watch(memoContent, (newValue) => {
-  localStorage.setItem(`memo-${props.id}`, newValue);
-});
+const removeWidget = () => {
+  emit("remove", props.id);
+};
+
+const updateMemo = (memo: string) => {
+  memoContent.value = memo;
+
+  const options: WidgetOptions = {
+    MemoWidgetOptions: {
+      text: memo,
+    },
+  };
+  emit("updateOptions", props.id, options);
+};
 </script>
 
 <style scoped lang="scss">

@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { useWidgetsStore, type WidgetOptions } from "~/store/widget";
 
 interface Task {
   id: number;
@@ -47,13 +47,18 @@ const props = defineProps<{
   id: string;
 }>();
 
-const emit = defineEmits(["remove"]);
+const emit = defineEmits(["remove", "updateOptions"]);
 
 function removeWidget() {
   emit("remove", props.id);
 }
 
-const tasks = ref<Task[]>([]);
+const widgetStore = useWidgetsStore();
+
+const tasks = ref<Task[]>(
+  widgetStore.widgets.find((widget) => widget.id === props.id)
+    ?.TaskListWidgetOptions?.tasks || []
+);
 const newTaskText = ref("");
 const title = ref("タスクリスト");
 
@@ -65,11 +70,24 @@ function addTask() {
       completed: false,
     });
     newTaskText.value = "";
+
+    updateOptions();
   }
 }
 
 function deleteTask(id: number) {
   tasks.value = tasks.value.filter((task) => task.id !== id);
+
+  updateOptions();
+}
+
+function updateOptions() {
+  const option: WidgetOptions = {
+    TaskListWidgetOptions: {
+      tasks: tasks.value,
+    },
+  };
+  emit("updateOptions", props.id, option);
 }
 </script>
 

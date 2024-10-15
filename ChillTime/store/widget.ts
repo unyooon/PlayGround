@@ -10,6 +10,7 @@ export type WidgetName =
 export interface Widget extends WidgetOptions {
   id: string;
   name: WidgetName;
+  title?: string;
   position: {
     x: number;
     y: number;
@@ -38,9 +39,25 @@ export interface WidgetOptions {
     width: number;
     height: number;
   };
-  YouTubePlayerOptions?: {
-    videoUrls: string[];
-  };
+  YouTubePlayerOptions?: YouTubePlayerWidgetOptions;
+  TaskListWidgetOptions?: TaskListWidgetOptions;
+  MemoWidgetOptions?: MemoWidgetOptions;
+}
+
+export interface YouTubePlayerWidgetOptions {
+  videoUrls: string[];
+}
+
+export interface TaskListWidgetOptions {
+  tasks: {
+    id: number;
+    text: string;
+    completed: boolean;
+  }[];
+}
+
+export interface MemoWidgetOptions {
+  text: string;
 }
 
 export const useWidgetsStore = defineStore("widgets", {

@@ -19,6 +19,7 @@
     "nuxt": "^3.13.2",
     "pinia": "^2.2.4",
     "vue": "latest",
+    "vue-gtag": "^2.0.1",
     "vue-router": "latest"
   },
   "devDependencies": {

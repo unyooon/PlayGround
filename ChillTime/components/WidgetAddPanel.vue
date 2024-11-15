@@ -12,7 +12,7 @@
         <span>{{ widget.displayName }}</span>
       </li>
     </ul>
-    <button class="close-button" @click="closePanel">閉じる</button>
+    <button class="close-button" @click="closePanel">Close</button>
   </div>
 </template>
 

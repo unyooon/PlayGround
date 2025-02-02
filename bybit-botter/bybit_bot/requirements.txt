@@ -1,0 +1,6 @@
+pandas
+numpy
+TA-Lib
+websocket-client
+bybit
+python-dotenv
